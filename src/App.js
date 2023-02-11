@@ -1,36 +1,32 @@
 import { AppBar, Toolbar } from "@mui/material";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, NavLink, useLocation } from "react-router-dom";
 
-function MainPage() {
-  return (
-    <>
-      <h1>메인 페이지</h1>
-    </>
-  );
-}
-
-function Sub1Page() {
-  return (
-    <>
-      <h1>서브 페이지</h1>
-    </>
-  );
-}
-
+import MainPage from "./pages/MainPage";
+import WritePage from "./pages/WritePage";
+import NoticeSnackBar from "./components/NoticeSnackbar";
 
 function App() {
+  const location = useLocation();
   return (
     <>
       <AppBar position="static">
         <Toolbar>
           <div className="flex-1"></div>
-          <div className="font-bold">NOTEPAD</div>
-          <div className="flex-1"></div>
+          <span className="font-bold select-none">앱 이름</span>
+          <div className="flex-1 flex justify-end">
+            {location.pathname != "/write" && (
+              <NavLink to="/write" className="select-none">글쓰기</NavLink>
+            )}
+            {location.pathname == "/write" && (
+              <NavLink to="/main" className="select-none">이전</NavLink>
+            )}
+          </div>
         </Toolbar>
       </AppBar>
+      <NoticeSnackBar />
       <Routes>
         <Route path="/main" element={<MainPage />} />
-        <Route path="/sub1" element={<Sub1Page />} />
+        <Route path="/write" element={<WritePage />} />
         <Route path="*" element={<Navigate to="/main" />} />
       </Routes>
     </>
