@@ -1,18 +1,17 @@
 import TodosEmpty from "../components/TodosEmpty";
+import { useTodosStatus } from "../hooks";
+import TodoListPage from "./TodoListPage";
 
 export default function MainPage() {
+    const todosStatus = useTodosStatus();
+    const TodosEmpty = todosStatus.todos.length == 0;
 
     if (TodosEmpty) {
-        const todosEmpty = true;
         return <TodosEmpty />
     }
     return (
         <>
-            <div className="flex-1 flex justify-center items-center">
-                <div>
-                    <span>메인 페이지</span>
-                </div>
-            </div>
+            <TodoListPage />
         </>
     );
 }

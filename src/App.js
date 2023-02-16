@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, NavLink, useLocation } from "react-router-dom"
 
 import MainPage from "./pages/MainPage";
 import WritePage from "./pages/WritePage";
-import NoticeSnackBar from "./components/NoticeSnackbar";
+import {NoticeSnackBar} from "./components/NoticeSnackbar";
 
 function App() {
   const location = useLocation();

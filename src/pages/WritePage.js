@@ -1,8 +1,11 @@
 import { TextField, Button } from "@mui/material";
+import { useNoticeSnackbarStatus } from "../components/NoticeSnackbar";
 import { useTodosStatus } from "../hooks";
 
 export default function WritePage() {
+  const noticeSnackbarStatus = useNoticeSnackbarStatus();
   const todosStatus = useTodosStatus();
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -15,14 +18,16 @@ export default function WritePage() {
       return;
     }
 
-    if (form.regDate.content.length == 0) {
+    if (form.content.value.length == 0) {
       alert("내용을 입력해주세요.");
-      form.regDate.focus();
+      form.content.focus();
 
       return;
-    };
+    }
 
-    todosStatus.addTodo(form.regDate.value, form.content.value)
+    const newTodoId = todosStatus.addTodo(form.regDate.value, form.content.value);
+
+    noticeSnackbarStatus.open(`${newTodoId}번 할 일이 추가되었습니다.`);
   }
 
   return (
@@ -37,14 +42,14 @@ export default function WritePage() {
           inputProps={{ className: "flex-1" }}
           multiline
         />
+        <Button type="submit" variant="contained">
+          <span>
+            <i class="fa-regular fa-pen-to-square"></i>
+          </span>
+          <span>&nbsp; &nbsp;</span>
+          <span>할 일 추가</span>
+        </Button>
       </form>
-      <Button type="submit" variant="contained">
-        <span>
-          <i class="fa-regular fa-pen-to-square"></i>
-        </span>
-        <span>&nbsp; &nbsp;</span>
-        <span>할 일 추가</span>
-      </Button>
     </>
   );
 }
