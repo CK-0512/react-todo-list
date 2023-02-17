@@ -9,12 +9,21 @@ export default function TodoListItem({
 }) {
   return (
     <>
-      <li key={todo.id} className="mt-10">
+      <li key={todo.id} className="mt-6 sm:mt-10">
         <div className="flex gap-2">
-          <Chip label={`번호 : ${todo.id}`} variant="outlined" className="!pt-1" />
-          <Chip label={todo.regDate} variant="outlined" color="primary" className="!pt-1" />
+          <Chip
+            label={`번호 : ${todo.id}`}
+            variant="outlined"
+            className="!pt-1"
+          />
+          <Chip
+            label={todo.performDate.substr(2, 14)}
+            variant="outlined"
+            color="primary"
+            className="!pt-1"
+          />
         </div>
-        <div className="flex shadow mt-4 rounded-[20px]">
+        <div className="flex shadow mt-2 sm:mt-5 rounded-[20px]">
           <Button className="!rounded-[20px_0_0_20px] !items-start flex-shrink-0 w-[130px]"
             color="inherit"
             onClick={() => onCompletedBtnClicked(todo.id)}
