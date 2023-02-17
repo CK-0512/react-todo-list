@@ -1,12 +1,16 @@
 import { TextField, Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useNoticeSnackbarStatus } from "../components/NoticeSnackbar";
 import { useTodosStatus } from "../hooks";
 
-export default function WritePage() {
+export default function EditPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const noticeSnackbarStatus = useNoticeSnackbarStatus();
   const todosStatus = useTodosStatus();
+
+  const todo = todosStatus.findTodoById(id);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -27,20 +31,29 @@ export default function WritePage() {
       return;
     }
 
-    const newTodoId = todosStatus.addTodo(form.regDate.value, form.content.value);
+    const newTodoId = todosStatus.modifyTodoById(
+      todo.id,
+      form.regDate.value,
+      form.content.value
+    );
 
-    noticeSnackbarStatus.open(`${newTodoId}번 할 일이 추가되었습니다.`);
-
-    form.content.value = "";
-    form.content.focus();
+    noticeSnackbarStatus.open(`${todo.id}번 할 일이 수정되었습니다.`);
 
     navigate(-1);
-  }
+  };
+
+  const regDateForInput = todo.regDate.substr(0, 16).replace(" ", "T");
 
   return (
     <>
       <form className="flex-1 flex p-10 flex-col gap-7" onSubmit={onSubmit}>
-        <TextField label="언제 해야 하나요?" focused type="datetime-local" name="regDate" />
+        <TextField
+          label="언제 해야 하나요?"
+          focused
+          type="datetime-local"
+          name="regDate"
+          defaultValue={regDateForInput}
+        />
         <TextField
           name="content"
           label="무엇을 해야 하나요?"
@@ -48,13 +61,14 @@ export default function WritePage() {
           InputProps={{ className: "flex-1 flex-col" }}
           inputProps={{ className: "flex-1" }}
           multiline
+          defaultValue={todo.content}
         />
         <Button type="submit" variant="contained">
           <span>
             <i class="fa-regular fa-pen-to-square"></i>
           </span>
           <span>&nbsp; &nbsp;</span>
-          <span>할 일 추가</span>
+          <span>할 일 수정</span>
         </Button>
       </form>
     </>
